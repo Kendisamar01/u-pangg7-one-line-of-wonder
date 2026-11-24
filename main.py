@@ -9,9 +9,8 @@ MAX_CHARS = 200
 def validate_entry(text: str) -> str:
     if not isinstance(text, str):
         raise ValueError("entry must be a string")
-    length = len(text)
-    if length < 1 or length > MAX_CHARS:
-        raise ValueError(f"entry must be 1 to {MAX_CHARS} characters, got {length}")
+    if not (1 <= len(text) <= MAX_CHARS):
+        raise ValueError(f"entry must be 1 to {MAX_CHARS} characters, got {len(text)}")
     if not text.strip():
         raise ValueError("entry must not be whitespace only")
     if "\n" in text or "\r" in text:
@@ -35,7 +34,10 @@ def write_entry(output_dir: Path = OUTPUT_DIR) -> Path:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Write the one-line wonder entry.")
     parser.add_argument(
-        "--output-dir", type=Path, default=OUTPUT_DIR, help="directory for entry.txt"
+        "--output-dir",
+        type=Path,
+        default=OUTPUT_DIR,
+        help="directory for entry.txt",
     )
     args = parser.parse_args()
     print(write_entry(args.output_dir))
